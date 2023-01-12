@@ -33,5 +33,9 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnClose();
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnNMClickSyslink2(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedCheck1();
 };

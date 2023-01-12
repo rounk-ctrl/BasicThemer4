@@ -15,6 +15,7 @@
 DWMNCRENDERINGPOLICY policy = DWMNCRP_DISABLED;
 NOTIFYICONDATA nidApp;
 static UINT s_uTaskbarRestart;
+BOOL ignoreExtend = false;
 
 // CAboutDlg dialog used for App About
 
@@ -70,12 +71,14 @@ void CBasicThemer4Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 }
-
 BEGIN_MESSAGE_MAP(CBasicThemer4Dlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_CLOSE()
+	ON_WM_GETMINMAXINFO()
+	ON_NOTIFY(NM_CLICK, IDC_SYSLINK2, &CBasicThemer4Dlg::OnNMClickSyslink2)
+	ON_BN_CLICKED(IDC_CHECK1, &CBasicThemer4Dlg::OnBnClickedCheck1)
 END_MESSAGE_MAP()
 
 VOID CALLBACK WinEventProcCallback(HWINEVENTHOOK hWinEventHook, DWORD dwEvent, HWND hwnd, LONG idObject, LONG idChild, DWORD dwEventThread, DWORD dwmsEventTime)
@@ -201,4 +204,35 @@ void CBasicThemer4Dlg::OnClose()
 {
 	Shell_NotifyIcon(NIM_DELETE, &nidApp);
 	EndDialog(0);
+}
+
+void CBasicThemer4Dlg::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
+{
+	lpMMI->ptMinTrackSize.x = 315;
+	lpMMI->ptMinTrackSize.y = 412;
+}
+
+void CBasicThemer4Dlg::OnNMClickSyslink2(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	NMLINK* pNMLink = (NMLINK*)pNMHDR;
+	LITEM iItem = pNMLink->item;
+	if (pNMHDR->idFrom == IDC_SYSLINK2)
+	{
+		ShellExecute(NULL, L"open", L"https://github.com/rounk-ctrl/BasicThemer4", NULL, NULL, SW_SHOWNORMAL);
+	}
+	*pResult = 0;
+}
+
+
+void CBasicThemer4Dlg::OnBnClickedCheck1()
+{
+	// TODO: Add your control notification handler code here
+	if (!ignoreExtend)
+	{
+		ignoreExtend = true;
+	}
+	else
+	{
+		ignoreExtend = false;
+	}
 }
